@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Product;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,10 +19,18 @@ use Illuminate\Support\Facades\Route;
 // Route::get("/products", [ProductController::class, "index"]);
 // Route::post("/products", [ProductController::class, "store"]);
 
-Route::resource("products" , ProductController::class);
+
+// public route 
+Route::post("/register",[ AuthController::class , "register"]);
+Route::get("/products",[ ProductController::class , "index"]);
+Route::get("/products/{id}",[ ProductController::class , "show"]);
 Route::get("/products/search/{name}", [ProductController::class, "searchByName"]);
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Protected route
+Route::group(["middleware" => ["auth:sanctum"]], function () {
+    Route::post("/logout" , [AuthController::class , "logout"]);
+    Route::post("/products", [ProductController::class, "store"]);
+    Route::delete("/products", [ProductController::class, "destroy"]);
+    Route::put("/products", [ProductController::class, "update"]);
 });

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\FdtList;
 
-class ProductController extends Controller
+class fdtListContoller extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return FdtList::all();
     }
 
     /**
@@ -27,12 +26,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "name" => "required",
-            "slug" => "required",
-            "price" => "required "
+            "fdtName" => "required",
+            "placeLink" => "required ",
+            "fdtLat" => "required ",
+            "fdtLng" => "required ",
         ]);
 
-        return Product::create($request->all());
+        return FdtList::create($request->all());
     }
 
     /**
@@ -43,7 +43,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        return Product::find($id);
+        return FdtList::find($id);
     }
 
     /**
@@ -55,9 +55,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::find($id);
-        $product->update($request->all());
-        return $product;
+        $oneFdt = FdtList::find($id);
+        $oneFdt->update($request->all());
+        return $oneFdt;
     }
 
     /**
@@ -68,17 +68,6 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        return Product::destroy($id);
-    }
-
-    /**
-     * search a product by name
-     *
-     * @param  string  $name
-     * @return \Illuminate\Http\Response
-     */
-    public function searchByName($name)
-    {
-        return Product::where("name" , "like" , "%".$name."%") -> get();
+        return FdtList::destroy($id);
     }
 }
